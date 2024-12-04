@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* *{
+    font-feature-settings: "cv11";
+} */
+
+@layer utilities {
+    @variants responsive {
+        .masonry {
+            column-gap: 0.5em;
+            column-count: 1;
+        }
+        .masonry-sm {
+            column-gap: 0.5em;
+            column-count: 2;
+        }
+        .masonry-md {
+            column-gap: 0.5em;
+            column-count: 3;
+        }
+        .break-inside {
+            break-inside: avoid;
+        }
+
+    }
+}
+
+.z-\[9995\]{
+    position: fixed;
+}
