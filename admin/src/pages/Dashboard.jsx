@@ -196,7 +196,7 @@ const Dashboard = () => {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="7" className="text-center py-8">
+                <td colSpan="8" className="text-center py-8">
                   <div className="w-full flex items-center justify-center">
                     <Spinner />
                   </div>
@@ -266,7 +266,7 @@ const Dashboard = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="7" className="text-center py-8 text-gray-500">
+                <td colSpan="8" className="text-center py-8 text-gray-500">
                   No wallpapers available
                 </td>
               </tr>
@@ -276,33 +276,35 @@ const Dashboard = () => {
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex justify-end items-center mt-4 gap-2">
-        <Typography variant="paragraph" className="text-gray-700">
-          Page {currentPage} of {totalPages}
-        </Typography>
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className={`w-8 h-8 flex items-center justify-center border-2 rounded-xl ${
-            currentPage === 1
-              ? "text-gray-400 cursor-not-allowed"
-              : "text-gray-900"
-          }`}
-        >
-          <IoChevronBack className="text-xl" />
-        </button>
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className={`w-8 h-8 flex items-center justify-center border-2 rounded-xl ${
-            currentPage === totalPages
-              ? "text-gray-400 cursor-not-allowed"
-              : "text-gray-900"
-          }`}
-        >
-          <IoChevronForwardOutline className="text-xl" />
-        </button>
-      </div>
+      {wallpapers.length > 0 && (
+        <div className="flex justify-end items-center mt-4 gap-2">
+          <Typography variant="paragraph" className="text-gray-700">
+            Page {currentPage} of {totalPages}
+          </Typography>
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`w-8 h-8 flex items-center justify-center border-2 rounded-xl ${
+              currentPage === 1
+                ? "text-gray-400 cursor-not-allowed"
+                : "text-gray-900"
+            }`}
+          >
+            <IoChevronBack className="text-xl" />
+          </button>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={`w-8 h-8 flex items-center justify-center border-2 rounded-xl ${
+              currentPage === totalPages
+                ? "text-gray-400 cursor-not-allowed"
+                : "text-gray-900"
+            }`}
+          >
+            <IoChevronForwardOutline className="text-xl" />
+          </button>
+        </div>
+      )}
 
       {/* Edit Wallpaper Modal */}
       <Dialog

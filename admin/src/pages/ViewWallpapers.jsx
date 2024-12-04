@@ -15,8 +15,9 @@ const ViewWallpapers = () => {
   const fetchData = async (currentPage) => {
     setLoading(true);
     try {
-      if (token) {  // Ensure the token is available
-        const data = await fetchWallpapers(token, currentPage);  // Pass the correct page here
+      if (token) {
+        // Ensure the token is available
+        const data = await fetchWallpapers(token, currentPage); // Pass the correct page here
         setWallpapers((prev) => [
           ...prev,
           ...data.wallpapers.filter(
@@ -51,10 +52,11 @@ const ViewWallpapers = () => {
   };
 
   useEffect(() => {
-    if (page) { // Ensure page is defined
+    if (page) {
+      // Ensure page is defined
       fetchData(page); // Fetch wallpapers whenever the page number changes
     }
-  }, [page, token]);  // Added token to the dependency array
+  }, [page, token]); // Added token to the dependency array
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -67,6 +69,7 @@ const ViewWallpapers = () => {
         All Wallpapers
       </h1>
       <div className="masonry sm:masonry-sm md:masonry-md">
+        {wallpapers.length <= 0 && <p>No wallpapers found.</p>}
         {wallpapers.map((wallpaper, index) => (
           <motion.div
             key={index}
