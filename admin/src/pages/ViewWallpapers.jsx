@@ -69,7 +69,7 @@ const ViewWallpapers = () => {
         All Wallpapers
       </h1>
       <div className="masonry sm:masonry-sm md:masonry-md">
-        {wallpapers.length <= 0 && <p>No wallpapers found.</p>}
+        {!loading && wallpapers.length <= 0 && <p>No wallpapers found.</p>}
         {wallpapers.map((wallpaper, index) => (
           <motion.div
             key={index}
