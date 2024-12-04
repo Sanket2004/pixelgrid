@@ -21,8 +21,8 @@ const Signup = () => {
 
     try {
       await signup(name, email, password);
-      setSuccess("Signup successful! Redirecting to login...");
-      setTimeout(() => navigate("/login"), 2000);
+      toast.success("Signup successful! Redirecting to login...");
+      setTimeout(() => navigate("/login"), 1000);
       toast.success("Signup successful");
       setLoading(false);
     } catch (err) {
