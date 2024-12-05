@@ -59,7 +59,7 @@ const UploadWallpaper = () => {
 
   return (
     <div className="mx-auto flex flex-col-reverse justify-center items-center min-h-[80vh] lg:flex-row gap-14">
-      <div className="lg:w-1/2 flex items-start h-full justify-center">
+      <div className="lg:w-1/2 flex items-start h-full justify-center w-full">
         <form onSubmit={handleUpload} className="space-y-6 w-full">
           <Typography variant="h3" className="font-black font-mono">
             Upload your wallpaper
