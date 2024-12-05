@@ -79,7 +79,7 @@ const ViewWallpapers = () => {
             className="rounded-xl shadow mb-2 overflow-hidden group block bg-black relative"
           >
             <img
-              src={wallpaper.imageUrl}
+              src={wallpaper.compressedUrl}
               alt={wallpaper.title}
               className="h-full w-full object-cover opacity-75 transition-opacity group-hover:opacity-50"
             />
@@ -95,7 +95,7 @@ const ViewWallpapers = () => {
 
               <div className="mt-2">
                 <div className="translate-y-8 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
-                  <p className="text-sm text-white break-words line-clamp-4">
+                  <p className="text-sm text-white break-words line-clamp-3">
                     {wallpaper.description}
                   </p>
                 </div>

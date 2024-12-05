@@ -61,6 +61,31 @@ exports.signup = async (req, res) => {
   res.status(201).json({ message: "Admin user created successfully" });
 };
 
+//USER DETAILS
+exports.getUserDetails = async (req, res) => {
+  try {
+    // Fetch user data using the ID attached to req.user by the authMiddleware
+    const user = await User.findById(req.user._id);
+
+    // Check if user exists
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Respond with user data (excluding sensitive information)
+    res.json({
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      createdAt: user.createdAt,
+    });
+  } catch (error) {
+    // Handle errors
+    console.error("Error fetching user details:", error.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 //UPLOAD WALLPAPER
 exports.uploadWallpaper = [
   upload.single("image"),
@@ -76,7 +101,7 @@ exports.uploadWallpaper = [
       const stream = cloudinary.uploader.upload_stream(
         {
           resource_type: "image",
-          folder: "wallpapers"
+          folder: "wallpapers",
         },
         async (error, result) => {
           if (error) {
@@ -110,6 +135,7 @@ exports.uploadWallpaper = [
   },
 ];
 
+// GET WALLPAPERS
 exports.getWallpapers = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -118,11 +144,35 @@ exports.getWallpapers = async (req, res) => {
 
     const wallpapers = await Wallpaper.find().skip(skip).limit(limit);
 
-    //total walls for pagination
+    // Total walls for pagination
     const total = await Wallpaper.countDocuments();
 
+    const compressedWalls = wallpapers.map((wall) => {
+      // Extract image path from the full imageUrl (everything after /upload/)
+      const imagePath = wall.imageUrl.split("/upload/")[1]; // This will get the path after /upload/
+
+      // Generate the Cloudinary URL for the image transformation
+      const cloudinaryUrl = cloudinary.url(
+        imagePath,
+
+        {
+          transformation: [
+            { width: 1000, crop: "scale" },
+            { quality: "auto" },
+            { fetch_format: "auto" },
+          ],
+        }
+      );
+
+
+      return {
+        ...wall.toObject(),
+        compressedUrl: cloudinaryUrl,
+      };
+    });
+
     res.json({
-      wallpapers,
+      wallpapers: compressedWalls,
       total,
       page,
       totalPage: Math.ceil(total / limit),
@@ -133,30 +183,7 @@ exports.getWallpapers = async (req, res) => {
   }
 };
 
-exports.getUserDetails = async (req, res) => {
-  try {
-    // Fetch user data using the ID attached to req.user by the authMiddleware
-    const user = await User.findById(req.user._id);
-
-    // Check if user exists
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // Respond with user data (excluding sensitive information)
-    res.json({
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      createdAt: user.createdAt,
-    });
-  } catch (error) {
-    // Handle errors
-    console.error("Error fetching user details:", error.message);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
+//UPDATE WALLS
 exports.updateWallpaper = async (req, res) => {
   const { id } = req.params;
   const { title, description } = req.body;
@@ -188,6 +215,7 @@ exports.updateWallpaper = async (req, res) => {
   }
 };
 
+//DELETE WALLS
 exports.deleteWallpaper = async (req, res) => {
   const { id } = req.params;
 
@@ -206,6 +234,7 @@ exports.deleteWallpaper = async (req, res) => {
   }
 };
 
+//UPDATE VISIBILITY
 exports.updateVisibility = async (req, res) => {
   const { id } = req.params; // Extract the wallpaper ID from the request params
 
