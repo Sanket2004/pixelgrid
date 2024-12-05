@@ -89,7 +89,7 @@ const ViewWallpapers = () => {
                 {new Date(wallpaper.createdAt).toLocaleString()}
               </p>
 
-              <p className="text-xl font-black text-white sm:text-2xl break-words">
+              <p className="text-xl font-black text-white sm:text-2xl break-words line-clamp-2">
                 {wallpaper.title}
               </p>
 
