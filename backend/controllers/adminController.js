@@ -173,10 +173,11 @@ exports.getWallpapers = async (req, res) => {
       );
 
       // console.log(cloudinaryUrl);
-      
+
+      const { imageUrl, ...wallData } = wall.toObject();
 
       return {
-        ...wall.toObject(),
+        ...wallData,
         compressedUrl: cloudinaryUrl,
       };
     });
