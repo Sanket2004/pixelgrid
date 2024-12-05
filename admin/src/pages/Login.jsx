@@ -35,7 +35,7 @@ const Login = () => {
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm"
       >
-        <Typography variant="h4" className="font-black text-center mb-1 font-mono">
+        <Typography variant="h4" className="font-black text-center mb-1 font-mono uppercase">
           Pixel<span className="text-gray-500">Grid</span>
         </Typography>
         <Typography

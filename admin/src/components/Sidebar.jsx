@@ -53,7 +53,7 @@ const Sidebar = () => {
             />
             <Typography
               variant="h4"
-              className="font-black text-black cursor-pointer font-mono group-hover:brightness-75 transition-all"
+              className="font-black text-black cursor-pointer font-mono group-hover:brightness-75 transition-all uppercase"
             >
               <span className="text-gray-600">Pixel</span>Grid
             </Typography>
@@ -72,7 +72,7 @@ const Sidebar = () => {
         <Card className="h-screen">
           <div className="p-4 flex justify-between items-center">
             <Link to={"/dashboard"} onClick={closeDrawer}>
-              <Typography variant="h4" className="font-black text-black font-mono">
+              <Typography variant="h4" className="font-black text-black font-mono uppercase">
                 Admin Panel
               </Typography>
             </Link>
