@@ -30,3 +30,7 @@
 .z-\[9995\]{
     position: fixed;
 }
+
+.lazy-load-image-background{
+    display: block !important;
+}
