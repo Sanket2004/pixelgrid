@@ -166,7 +166,7 @@ exports.getWallpapers = async (req, res) => {
               x: 10,
               y: 10,
               width: 80,
-              opacity: 50,
+              opacity: 90,
             },
           ],
         }
