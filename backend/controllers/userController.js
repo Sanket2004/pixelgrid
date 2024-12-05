@@ -2,16 +2,20 @@ const Wallpaper = require("../models/wallpaperModel");
 const cloudinary = require("cloudinary");
 
 // GET WALLPAPERS
+// GET WALLPAPERS
 exports.getWallpapers = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    const wallpapers = await Wallpaper.find().skip(skip).limit(limit);
+    // Fetch only visible wallpapers
+    const wallpapers = await Wallpaper.find({ visibility: true })
+      .skip(skip)
+      .limit(limit);
 
-    // Total walls for pagination
-    const total = await Wallpaper.countDocuments();
+    // Total count of visible wallpapers for pagination
+    const total = await Wallpaper.countDocuments({ visibility: true });
 
     const compressedWalls = wallpapers.map((wall) => {
       // Extract image path from the full imageUrl (everything after /upload/)
@@ -20,7 +24,6 @@ exports.getWallpapers = async (req, res) => {
       // Generate the Cloudinary URL for the image transformation
       const cloudinaryUrl = cloudinary.url(
         imagePath,
-
         {
           transformation: [
             { width: 600, crop: "scale" }, // Resize to a smaller width
@@ -37,8 +40,6 @@ exports.getWallpapers = async (req, res) => {
           ],
         }
       );
-
-      // console.log(cloudinaryUrl);
 
       const { imageUrl, ...wallData } = wall.toObject();
 
@@ -59,6 +60,7 @@ exports.getWallpapers = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // DOWNLOAD WALLPAPER (with visibility check and download count increment)
 exports.downloadWallpaper = async (req, res) => {

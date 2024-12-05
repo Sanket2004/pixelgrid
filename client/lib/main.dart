@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'PixelGrid',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        textTheme: GoogleFonts.figtreeTextTheme(
+        textTheme: GoogleFonts.tekoTextTheme(
           Theme.of(context).textTheme,
         ),
         scaffoldBackgroundColor: Colors.white,
