@@ -156,23 +156,24 @@ exports.getWallpapers = async (req, res) => {
         imagePath,
 
         {
-          // transformation: [
-          //   // { width: 1000, crop: "scale" },
-          //   // { quality: "auto" },
-          //   // { fetch_format: "auto" },
-          //   // { width: 600, crop: "scale" },
-          //   // { quality: "auto", fetch_format: "auto" },
-          //   {
-          //     quality: 20,
-          //   }
-          // ],
           transformation: [
             { width: 600, crop: "scale" }, // Resize to a smaller width
-            { quality: "10" }, // Reduce quality
+            { quality: "50" }, // Reduce quality
             { fetch_format: "auto" }, // Optimize format
+            {
+              overlay: "lp12jta7i7klxaad4rbv",
+              gravity: "north_east",
+              x: 10,
+              y: 10,
+              width: 80,
+              opacity: 50,
+            },
           ],
         }
       );
+
+      // console.log(cloudinaryUrl);
+      
 
       return {
         ...wall.toObject(),

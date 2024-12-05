@@ -38,7 +38,7 @@ const Signup = () => {
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm"
       >
-        <Typography variant="h4" className="font-black text-center mb-1">
+        <Typography variant="h4" className="font-black text-center mb-1 font-mono">
           Pixel<span className="text-gray-500">Grid</span>
         </Typography>
         <Typography
@@ -88,7 +88,7 @@ const Signup = () => {
           />
         </div>
 
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button type="submit" className="w-full font-mono tracking-widest" disabled={loading}>
           {loading ? "Registering..." : "Register"}
         </Button>
       </form>

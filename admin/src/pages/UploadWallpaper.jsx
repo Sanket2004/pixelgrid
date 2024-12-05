@@ -61,7 +61,7 @@ const UploadWallpaper = () => {
     <div className="mx-auto flex flex-col-reverse justify-center items-center min-h-[80vh] lg:flex-row gap-14">
       <div className="lg:w-1/2 flex items-start h-full justify-center">
         <form onSubmit={handleUpload} className="space-y-6 w-full">
-          <Typography variant="h3" className="font-black">
+          <Typography variant="h3" className="font-black font-mono">
             Upload your wallpaper
           </Typography>
           <Typography variant="paragraph" className="text-gray-600">
@@ -96,7 +96,7 @@ const UploadWallpaper = () => {
           />
 
           {/* Submit Button */}
-          <Button type="submit" size="md" className="w-full" disabled={loading}>
+          <Button type="submit" size="md" className="w-full font-mono tracking-widest" disabled={loading}>
             {loading ? "Uploading..." : "Upload"}
           </Button>
         </form>
@@ -127,9 +127,9 @@ const UploadWallpaper = () => {
           >
             <input {...getInputProps()} accept="image/*" />
             {isDragActive ? (
-              <p className="text-blue-500">Drop the files here...</p>
+              <p className="text-blue-500 font-mono">Drop the files here...</p>
             ) : (
-              <p className="text-gray-500">
+              <p className="text-gray-500 font-mono">
                 Drag & drop an image here, or click to select a file
               </p>
             )}

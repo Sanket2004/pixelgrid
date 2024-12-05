@@ -65,7 +65,7 @@ const ViewWallpapers = () => {
 
   return (
     <div>
-      <h1 className="text-xl font-black mb-6 uppercase tracking-wide text-gray-400">
+      <h1 className="text-xl font-black mb-6 uppercase text-gray-400 font-mono tracking-widest">
         All Wallpapers
       </h1>
       <div className="masonry sm:masonry-sm md:masonry-md">
@@ -85,7 +85,7 @@ const ViewWallpapers = () => {
             />
 
             <div className="p-4 sm:p-6 lg:p-8 absolute inset-0">
-              <p className="text-sm font-medium uppercase tracking-wide text-gray-300">
+              <p className="text-sm font-medium uppercase text-gray-300 font-mono tracking-wider">
                 {new Date(wallpaper.createdAt).toLocaleString()}
               </p>
 

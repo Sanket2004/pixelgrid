@@ -150,7 +150,10 @@ const Dashboard = () => {
       {/* User Details */}
       {userDetails && (
         <div className="mb-8">
-          <Typography variant="h3" className="font-bold text-gray-900">
+          <Typography
+            variant="h3"
+            className="font-bold text-gray-900 font-mono"
+          >
             Admin Dashboard
           </Typography>
           <Typography
@@ -167,28 +170,28 @@ const Dashboard = () => {
         <table className="min-w-full border-collapse border border-gray-200">
           <thead>
             <tr className="bg-gray-900 text-white text-xs uppercase tracking-wide">
-              <th className="border border-gray-300 px-4 py-4 text-left">
+              <th className="border border-gray-300 px-4 py-4 text-left font-mono tracking-wide">
                 SL No.
               </th>
-              <th className="border border-gray-300 px-4 py-4 text-left">
+              <th className="border border-gray-300 px-4 py-4 text-left font-mono tracking-wide">
                 Wallpaper
               </th>
-              <th className="border border-gray-300 px-4 py-4 text-left">
+              <th className="border border-gray-300 px-4 py-4 text-left font-mono tracking-wide min-w-56">
                 Title
               </th>
-              <th className="border border-gray-300 px-4 py-4 text-left">
+              <th className="border border-gray-300 px-4 py-4 text-left font-mono tracking-wide min-w-96">
                 Description
               </th>
-              <th className="border border-gray-300 px-4 py-4 text-left">
+              <th className="border border-gray-300 px-4 py-4 text-left font-mono tracking-wide">
                 Downloads
               </th>
-              <th className="border border-gray-300 px-4 py-4 text-left">
+              <th className="border border-gray-300 px-4 py-4 text-left font-mono tracking-wide">
                 Published At
               </th>
-              <th className="border border-gray-300 px-4 py-4 text-left">
+              <th className="border border-gray-300 px-4 py-4 text-left font-mono tracking-wide">
                 Last Updated
               </th>
-              <th className="border border-gray-300 px-4 py-4 text-left">
+              <th className="border border-gray-300 px-4 py-4 text-left font-mono tracking-wide">
                 Actions
               </th>
             </tr>
@@ -314,7 +317,7 @@ const Dashboard = () => {
         className="rounded-lg p-4"
       >
         <DialogHeader>
-          <Typography variant="h5" className="font-bold">
+          <Typography variant="h5" className="font-black font-mono">
             Edit Wallpaper Details
           </Typography>
         </DialogHeader>
@@ -344,10 +347,10 @@ const Dashboard = () => {
           </div>
         </DialogBody>
         <DialogFooter className="flex justify-end gap-2">
-          <Button color="red" onClick={closeModal} size="sm">
+          <Button color="red" onClick={closeModal} size="sm" className="font-mono tracking-widest">
             Cancel
           </Button>
-          <Button color="black" onClick={handleUpdateWallpaper} size="sm">
+          <Button color="black" onClick={handleUpdateWallpaper} size="sm" className="font-mono tracking-widest">
             Save
           </Button>
         </DialogFooter>

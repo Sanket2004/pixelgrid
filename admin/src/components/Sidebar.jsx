@@ -35,7 +35,6 @@ const Sidebar = () => {
   // Helper function to check if the link is active
   const isActive = (path) => location.pathname === path;
 
-
   const handleLogout = () => {
     removeToken();
     toast.success("Logout successful");
@@ -44,14 +43,21 @@ const Sidebar = () => {
 
   return (
     <>
-      <Navbar className="fixed mx-auto max-w-full px-4 py-2 lg:px-8 lg:py-4 flex justify-between shadow-sm rounded-none z-50 top-0">
+      <Navbar className="fixed mx-auto max-w-full px-4 py-2 lg:px-8 lg:py-4 flex justify-between shadow-sm rounded-none z-50 top-0 items-center">
         <Link to={"/dashboard"}>
-          <Typography
-            variant="h4"
-            className="font-black text-black cursor-pointer"
-          >
-            <span className="text-gray-600">Pixel</span>Grid
-          </Typography>
+          <div className="flex gap-1 items-center justify-center group">
+            <img
+              src="/assets/logo.png"
+              alt="PixelGrid Logo"
+              className="w-8 h-8 group-hover:rotate-45 transition-all"
+            />
+            <Typography
+              variant="h4"
+              className="font-black text-black cursor-pointer font-mono group-hover:brightness-75 transition-all"
+            >
+              <span className="text-gray-600">Pixel</span>Grid
+            </Typography>
+          </div>
         </Link>
         <IconButton variant="text" size="md" onClick={openDrawer}>
           {isDrawerOpen ? (
@@ -66,8 +72,8 @@ const Sidebar = () => {
         <Card className="h-screen">
           <div className="p-4 flex justify-between items-center">
             <Link to={"/dashboard"} onClick={closeDrawer}>
-              <Typography variant="h4" className="font-black text-black">
-                Dashboard
+              <Typography variant="h4" className="font-black text-black font-mono">
+                Admin Panel
               </Typography>
             </Link>
           </div>

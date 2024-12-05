@@ -27,32 +27,50 @@ const Profile = () => {
     fetchUD();
   }, [token]);
 
-  if (loading) return <div className="text-center py-12 flex justify-center items-center"><Spinner/></div>;
-  if (error) return <div className="text-center text-red-500 py-12">{error}</div>;
+  if (loading)
+    return (
+      <div className="text-center py-12 flex justify-center items-center">
+        <Spinner />
+      </div>
+    );
+  if (error)
+    return <div className="text-center text-red-500 py-12">{error}</div>;
 
   return (
-    <div className="mx-auto py-12">
-      <div className="bg-white p-8 rounded-lg shadow">
-        <h2 className="text-2xl font-black mb-6 text-gray-800">User Profile</h2>
+    <div className="mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className="bg-white p-8 rounded-lg shadow text-center max-w-lg mx-auto">
+        <Typography
+          variant="h4"
+          className="font-black mb-6 text-gray-800 font-mono uppercase"
+        >
+          User Profile
+        </Typography>
 
-        <div className="flex items-center space-x-6 mb-6">
-          <div className="w-24 h-24 bg-gray-400 rounded-full flex items-center justify-center text-white font-semibold">
-            <span className="text-2xl">{user.name[0]}</span>
+        <div className="flex items-center mb-6 flex-col sm:flex-row gap-4 justify-center text-left">
+          {/* Avatar */}
+          <div className="w-24 h-24 bg-gray-800 rounded-full flex items-center justify-center text-white font-semibold font-mono tracking-widest">
+            <span className="text-2xl">
+              {user.name.split(" ")[0][0] +
+                (user.name.split(" ")[1]
+                  ? user.name.split(" ")[1][0]
+                  : "")}{" "}
+            </span>
           </div>
-          <div>
-            <h3 className="text-xl font-semibold">{user.name}</h3>
+          {/* User Info */}
+          <div className="text-center sm:text-left">
+            <h3 className="text-2xl font-semibold font-mono">{user.name}</h3>
             <p className="text-gray-600">{user.email}</p>
-            <p className="text-gray-500">{user.role}</p>
+            <p className="text-gray-400">{user.role}</p>
           </div>
         </div>
-<hr/>
+        <hr />
         <div className="mt-4">
-          <Typography variant="h6" className="font-semibold text-gray-800">
+          <Typography variant="h6" className="font-semibold text-gray-800 font-mono">
             Additional Information
           </Typography>
-            <Typography variant="small" color="gray">
-              Account created at: {new Date(user.createdAt).toLocaleString()}
-            </Typography>
+          <Typography variant="small" color="gray">
+            Account created at: {new Date(user.createdAt).toLocaleString()}
+          </Typography>
         </div>
       </div>
     </div>
