@@ -68,7 +68,7 @@ const Login = () => {
             required
           />
         </div>
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={loading}>
           {loading ? "Logging in.." : "Login"}
         </Button>
       </form>

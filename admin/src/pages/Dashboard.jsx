@@ -215,10 +215,10 @@ const Dashboard = () => {
                       alt="Wallpaper"
                     />
                   </td>
-                  <td className="border border-gray-300 px-4 py-2">
+                  <td className="border border-gray-300 px-4 py-2 min-w-56">
                     {item.title}
                   </td>
-                  <td className="border border-gray-300 px-4 py-2">
+                  <td className="border border-gray-300 px-4 py-2 min-w-96">
                     {item.description}
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
