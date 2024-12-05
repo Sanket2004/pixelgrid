@@ -23,9 +23,9 @@ exports.getWallpapers = async (req, res) => {
       // Generate the Cloudinary URL for the image transformation
       const cloudinaryUrl = cloudinary.url(imagePath, {
         transformation: [
-          { crop: "scale" },
-          { quality: "auto" },
-          { fetch_format: "auto" },
+          { width: 600, crop: "scale" }, // Resize to a smaller width
+          { quality: "10" }, // Reduce quality
+          { fetch_format: "auto" }, // Optimize format
         ],
       });
 

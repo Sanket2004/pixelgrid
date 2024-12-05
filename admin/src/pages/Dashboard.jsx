@@ -210,7 +210,7 @@ const Dashboard = () => {
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
                     <img
-                      src={item.imageUrl}
+                      src={item.compressedUrl}
                       className="min-w-20 w-full h-20 object-cover rounded-lg"
                       alt="Wallpaper"
                     />

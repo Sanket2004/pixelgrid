@@ -156,14 +156,23 @@ exports.getWallpapers = async (req, res) => {
         imagePath,
 
         {
+          // transformation: [
+          //   // { width: 1000, crop: "scale" },
+          //   // { quality: "auto" },
+          //   // { fetch_format: "auto" },
+          //   // { width: 600, crop: "scale" },
+          //   // { quality: "auto", fetch_format: "auto" },
+          //   {
+          //     quality: 20,
+          //   }
+          // ],
           transformation: [
-            { width: 1000, crop: "scale" },
-            { quality: "auto" },
-            { fetch_format: "auto" },
+            { width: 600, crop: "scale" }, // Resize to a smaller width
+            { quality: "10" }, // Reduce quality
+            { fetch_format: "auto" }, // Optimize format
           ],
         }
       );
-
 
       return {
         ...wall.toObject(),
