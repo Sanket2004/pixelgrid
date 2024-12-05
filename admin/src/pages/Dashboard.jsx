@@ -160,7 +160,7 @@ const Dashboard = () => {
             variant="paragraph"
             className="text-gray-500 font-semibold"
           >
-            Welcome, {userDetails.name}!
+            Welcome, {userDetails.name.split(" ")[0]}!
           </Typography>
         </div>
       )}
