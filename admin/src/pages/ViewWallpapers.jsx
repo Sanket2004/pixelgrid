@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Spinner } from "@material-tailwind/react";
 import { fetchWallpapers } from "../api/wallpaper";
 import { getToken } from "../utils/auth";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const ViewWallpapers = () => {
   const [wallpapers, setWallpapers] = useState([]);
@@ -78,7 +80,8 @@ const ViewWallpapers = () => {
             transition={{ delay: index * 0.05, duration: 0.5 }}
             className="rounded-xl shadow mb-2 overflow-hidden group block bg-black relative"
           >
-            <img
+            <LazyLoadImage
+              effect="blur"
               src={wallpaper.compressedUrl}
               alt={wallpaper.title}
               className="h-full w-full object-cover opacity-75 transition-opacity group-hover:opacity-50"

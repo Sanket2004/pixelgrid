@@ -1,36 +1,49 @@
 const Wallpaper = require("../models/wallpaperModel");
 const cloudinary = require("cloudinary");
 
-// GET WALLPAPERS (with visibility check)
+// GET WALLPAPERS
 exports.getWallpapers = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    // Find wallpapers with visibility true
-    const wallpapers = await Wallpaper.find({ visibility: true })
-      .skip(skip)
-      .limit(limit);
+    const wallpapers = await Wallpaper.find().skip(skip).limit(limit);
 
-    // Total visible wallpapers for pagination
-    const total = await Wallpaper.countDocuments({ visibility: true });
+    // Total walls for pagination
+    const total = await Wallpaper.countDocuments();
 
     const compressedWalls = wallpapers.map((wall) => {
       // Extract image path from the full imageUrl (everything after /upload/)
       const imagePath = wall.imageUrl.split("/upload/")[1]; // This will get the path after /upload/
 
       // Generate the Cloudinary URL for the image transformation
-      const cloudinaryUrl = cloudinary.url(imagePath, {
-        transformation: [
-          { width: 600, crop: "scale" }, // Resize to a smaller width
-          { quality: "10" }, // Reduce quality
-          { fetch_format: "auto" }, // Optimize format
-        ],
-      });
+      const cloudinaryUrl = cloudinary.url(
+        imagePath,
+
+        {
+          transformation: [
+            { width: 600, crop: "scale" }, // Resize to a smaller width
+            { quality: "50" }, // Reduce quality
+            { fetch_format: "auto" }, // Optimize format
+            {
+              overlay: "lp12jta7i7klxaad4rbv",
+              gravity: "north_east",
+              x: 10,
+              y: 10,
+              width: 80,
+              opacity: 90,
+            },
+          ],
+        }
+      );
+
+      // console.log(cloudinaryUrl);
+
+      const { imageUrl, ...wallData } = wall.toObject();
 
       return {
-        ...wall.toObject(),
+        ...wallData,
         compressedUrl: cloudinaryUrl,
       };
     });

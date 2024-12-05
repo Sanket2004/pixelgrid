@@ -36,14 +36,23 @@ const Signup = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm"
+        className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm flex flex-col justify-center items-center"
       >
-        <Typography variant="h4" className="font-black text-center mb-1 font-mono uppercase">
+        <img
+          src="/assets/logo.png"
+          alt="PixelGrid Logo"
+          className="h-16 w-h-16 mb-4 hover:drop-shadow-xl hover:rotate-45 transition-all cursor-pointer"
+        />
+
+        <Typography
+          variant="h4"
+          className="font-black text-center mb-1 font-mono uppercase"
+        >
           Pixel<span className="text-gray-500">Grid</span>
         </Typography>
         <Typography
           variant="h6"
-          className=" mb-6 text-center text-gray-500 font-semibold"
+          className=" mb-6 text-center text-gray-500 font-mono font-normal"
         >
           Admin Signup
         </Typography>
@@ -52,7 +61,7 @@ const Signup = () => {
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         {success && <p className="text-green-500 text-center mb-4">{success}</p>} */}
 
-        <div className="mb-6">
+        <div className="mb-6 w-full">
           <Input
             type="text"
             value={name}
@@ -64,7 +73,7 @@ const Signup = () => {
           />
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 w-full">
           <Input
             type="email"
             value={email}
@@ -76,7 +85,7 @@ const Signup = () => {
           />
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 w-full">
           <Input
             type="password"
             value={password}
@@ -88,7 +97,11 @@ const Signup = () => {
           />
         </div>
 
-        <Button type="submit" className="w-full font-mono tracking-widest" disabled={loading}>
+        <Button
+          type="submit"
+          className="w-full font-mono tracking-widest"
+          disabled={loading}
+        >
           {loading ? "Registering..." : "Register"}
         </Button>
       </form>

@@ -49,7 +49,7 @@ const Sidebar = () => {
             <img
               src="/assets/logo.png"
               alt="PixelGrid Logo"
-              className="w-8 h-8 group-hover:rotate-45 transition-all"
+              className="w-8 h-8 group-hover:rotate-45 transition-all group-hover:drop-shadow-xl"
             />
             <Typography
               variant="h4"

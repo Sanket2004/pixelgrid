@@ -22,6 +22,8 @@ import {
 } from "../api/wallpaper";
 import { IoChevronBack, IoChevronForwardOutline } from "react-icons/io5";
 import { TbEye, TbEyeOff, TbPhotoEdit, TbTrash } from "react-icons/tb";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 // Utility functions for time formatting
 const formatTimeAgo = (timestamp) => {
@@ -207,12 +209,13 @@ const Dashboard = () => {
               </tr>
             ) : wallpapers.length > 0 ? (
               wallpapers.map((item, index) => (
-                <tr key={item._id} className="odd:bg-white even:bg-gray-50">
+                <tr key={item._id} className="odd:bg-white even:bg-gray-50 hover:brightness-95">
                   <td className="border border-gray-300 px-4 py-2">
                     {index + 1 + (currentPage - 1) * 10}
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    <img
+                    <LazyLoadImage
+                      effect="blur"
                       src={item.compressedUrl}
                       className="min-w-20 w-full h-20 object-cover rounded-lg"
                       alt="Wallpaper"
@@ -347,10 +350,20 @@ const Dashboard = () => {
           </div>
         </DialogBody>
         <DialogFooter className="flex justify-end gap-2">
-          <Button color="red" onClick={closeModal} size="sm" className="font-mono tracking-widest">
+          <Button
+            color="red"
+            onClick={closeModal}
+            size="sm"
+            className="font-mono tracking-widest"
+          >
             Cancel
           </Button>
-          <Button color="black" onClick={handleUpdateWallpaper} size="sm" className="font-mono tracking-widest">
+          <Button
+            color="black"
+            onClick={handleUpdateWallpaper}
+            size="sm"
+            className="font-mono tracking-widest"
+          >
             Save
           </Button>
         </DialogFooter>
