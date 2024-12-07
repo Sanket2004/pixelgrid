@@ -67,7 +67,8 @@ const Dashboard = () => {
         setWallpapers(wallpapers);
         setTotalPages(totalPage);
       } catch (err) {
-        toast.error("Error fetching data");
+        const errorMsg = err.response?.data?.message;
+        toast.error(errorMsg);
         console.error(err);
       } finally {
         setLoading(false);
@@ -100,7 +101,8 @@ const Dashboard = () => {
       setWallpapers(wallpapers);
       closeModal();
     } catch (err) {
-      toast.error("Failed to update wallpaper");
+      const errorMsg = err.response?.data?.message;
+      toast.error(errorMsg);
       console.error(err);
     }
   };
@@ -117,7 +119,8 @@ const Dashboard = () => {
         const { wallpapers } = await fetchWallpapers(token, currentPage);
         setWallpapers(wallpapers);
       } catch (err) {
-        toast.error("Failed to delete wallpaper");
+        const errorMsg = err.response?.data?.message;
+        toast.error(errorMsg);
         console.error(err);
       }
     }
@@ -130,7 +133,8 @@ const Dashboard = () => {
       const { wallpapers } = await fetchWallpapers(token, currentPage);
       setWallpapers(wallpapers);
     } catch (error) {
-      toast.error("Failed to update visibility");
+      const errorMsg = error.response?.data?.message;
+      toast.error(errorMsg);
       console.error(error);
     }
   };

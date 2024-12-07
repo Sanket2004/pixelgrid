@@ -46,8 +46,9 @@ const UploadWallpaper = () => {
       setDescription("");
       setImage(null);
     } catch (error) {
+      const errorMsg = error.response?.data?.message;
       console.error(error);
-      toast.error("Failed to add wallpaper");
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }

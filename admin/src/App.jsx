@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
@@ -26,6 +26,8 @@ const App = () => {
             </ProtectedRoute>
           }
         >
+          <Route index element={<Navigate to="dashboard" />} />
+
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="upload" element={<UploadWallpaper />} />
           <Route path="wallpapers" element={<ViewWallpapers />} />

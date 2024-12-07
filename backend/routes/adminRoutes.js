@@ -8,6 +8,7 @@ const {
   updateWallpaper,
   deleteWallpaper,
   updateVisibility,
+  logout,
 } = require("../controllers/adminController");
 const authMiddleware = require("../config/authMiddleware");
 
@@ -21,5 +22,7 @@ router.get("/details", authMiddleware, getUserDetails);
 router.put("/wallpaper/:id", authMiddleware, updateWallpaper);
 router.delete("/wallpaper/:id", authMiddleware, deleteWallpaper);
 router.put('/wallpaper/:id/visibility', updateVisibility);
+
+router.post("/logout", authMiddleware, logout);
 
 module.exports = router;

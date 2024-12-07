@@ -6,6 +6,7 @@ const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const cloudinary = require("cloudinary").v2;
 const streamifier = require("streamifier"); // To stream the image to Cloudinary
+const ActiveDeviceModel = require("../models/ActiveDeviceModel");
 
 // Configure Cloudinary with your credentials (in a separate config file or .env)
 cloudinary.config({
@@ -21,21 +22,54 @@ const upload = multer({ storage });
 //ADMIN LOGIN
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email, role: "admin" });
 
-  if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.status(401).json({ message: "Invalid email or password" });
+  if (!email && !password) {
+    return res
+      .status(400)
+      .json({ message: "Please enter both email and password" });
   }
+  try {
+    const user = await User.findOne({ email, role: "admin" });
 
-  const token = jwt.sign(
-    { _id: user._id, role: user.role },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: "1h",
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ message: "Invalid email or password" });
     }
-  );
 
-  res.json({ token });
+    const existingDevice = await ActiveDeviceModel.findOne({
+      userId: user._id,
+    });
+    console.log(user._id);
+
+    if (existingDevice) {
+      return res.status(403).json({
+        message:
+          "You are already logged in on another device. Please log out from the other device first.",
+      });
+    }
+
+    const token = jwt.sign(
+      { _id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    const userAgent = req.headers["user-agent"];
+    const ip = req.ip;
+    await ActiveDeviceModel.create({
+      userId: user._id,
+      deviceInfo: userAgent,
+      ip,
+      lastSeen: new Date(),
+      tokenSessionId: token,
+    });
+
+    res.json({ token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error on Admin Login" });
+  }
 };
 
 // ADMIN SIGNUP
@@ -270,5 +304,20 @@ exports.updateVisibility = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Error updating visibility" });
+  }
+};
+
+exports.logout = async (req, res) => {
+  try {
+    // Remove the active device session for the logged-in user
+    await ActiveDeviceModel.deleteOne({
+      userId: req.user._id,
+      tokenSessionId: req.headers.authorization?.split(" ")[1], // Make sure the session is invalidated
+    });
+
+    return res.status(201).json({ message: "Logged out successfully." });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };

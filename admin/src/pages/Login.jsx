@@ -23,8 +23,9 @@ const Login = () => {
       toast.success("Login successful");
       setLoading(false);
     } catch (err) {
-      setError("Invalid credentials. Please try again.");
-      toast.error("Invalid credentials");
+      const errorMsg = err.response?.data?.message;
+      setError(errorMsg || "Invalid credentials. Please try again.");
+      toast.error(errorMsg);
       setLoading(false);
     }
   };

@@ -18,9 +18,10 @@ const Profile = () => {
         setUser(data);
         setLoading(false);
       } catch (err) {
+        const errorMsg = err.response?.data?.message;
         setError(err.message);
         setLoading(false);
-        toast.error("Failed to load profile");
+        toast.error(errorMsg);
       }
     };
 
@@ -65,7 +66,10 @@ const Profile = () => {
         </div>
         <hr />
         <div className="mt-4">
-          <Typography variant="h6" className="font-semibold text-gray-800 font-mono">
+          <Typography
+            variant="h6"
+            className="font-semibold text-gray-800 font-mono"
+          >
             Additional Information
           </Typography>
           <Typography variant="small" color="gray">

@@ -21,13 +21,15 @@ import {
   IoPersonCircleOutline,
   IoPieChartOutline,
 } from "react-icons/io5";
-import { removeToken } from "../utils/auth";
+import { getToken, removeToken } from "../utils/auth";
 import { toast } from "react-toastify";
+import { logout } from "../api/auth";
 
 const Sidebar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const location = useLocation(); // Get current route
   const navigate = useNavigate();
+  const Token = getToken();
 
   const openDrawer = () => setIsDrawerOpen(true);
   const closeDrawer = () => setIsDrawerOpen(false);
@@ -35,7 +37,8 @@ const Sidebar = () => {
   // Helper function to check if the link is active
   const isActive = (path) => location.pathname === path;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logout(Token);
     removeToken();
     toast.success("Logout successful");
     navigate("/login");
@@ -72,7 +75,10 @@ const Sidebar = () => {
         <Card className="h-screen">
           <div className="p-4 flex justify-between items-center">
             <Link to={"/dashboard"} onClick={closeDrawer}>
-              <Typography variant="h4" className="font-black text-black font-mono uppercase">
+              <Typography
+                variant="h4"
+                className="font-black text-black font-mono uppercase"
+              >
                 Admin Panel
               </Typography>
             </Link>
