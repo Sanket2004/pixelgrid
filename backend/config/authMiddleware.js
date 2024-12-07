@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const ActiveDeviceModel = require("../models/ActiveDeviceModel");
+const ActiveDeviceModel = require("../models/activeDeviceModel");
 
 const authMiddleware = async (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];

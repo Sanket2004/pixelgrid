@@ -6,7 +6,7 @@ const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const cloudinary = require("cloudinary").v2;
 const streamifier = require("streamifier"); // To stream the image to Cloudinary
-const ActiveDeviceModel = require("../models/ActiveDeviceModel");
+const ActiveDeviceModel = require("../models/activeDeviceModel");
 
 // Configure Cloudinary with your credentials (in a separate config file or .env)
 cloudinary.config({
