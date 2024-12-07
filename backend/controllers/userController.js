@@ -22,24 +22,21 @@ exports.getWallpapers = async (req, res) => {
       const imagePath = wall.imageUrl.split("/upload/")[1]; // This will get the path after /upload/
 
       // Generate the Cloudinary URL for the image transformation
-      const cloudinaryUrl = cloudinary.url(
-        imagePath,
-        {
-          transformation: [
-            { width: 600, crop: "scale" }, // Resize to a smaller width
-            { quality: "50" }, // Reduce quality
-            { fetch_format: "auto" }, // Optimize format
-            {
-              overlay: "lp12jta7i7klxaad4rbv",
-              gravity: "north_east",
-              x: 10,
-              y: 10,
-              width: 80,
-              opacity: 90,
-            },
-          ],
-        }
-      );
+      const cloudinaryUrl = cloudinary.url(imagePath, {
+        transformation: [
+          { width: 600, crop: "scale" }, // Resize to a smaller width
+          { quality: "50" }, // Reduce quality
+          { fetch_format: "auto" }, // Optimize format
+          {
+            overlay: "lp12jta7i7klxaad4rbv",
+            gravity: "north_east",
+            x: 10,
+            y: 10,
+            width: 80,
+            opacity: 90,
+          },
+        ],
+      });
 
       const { imageUrl, ...wallData } = wall.toObject();
 
@@ -60,7 +57,6 @@ exports.getWallpapers = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
 
 // DOWNLOAD WALLPAPER (with visibility check and download count increment)
 exports.downloadWallpaper = async (req, res) => {
@@ -90,6 +86,35 @@ exports.downloadWallpaper = async (req, res) => {
     });
   } catch (error) {
     console.error("Error downloading wallpaper:", error.message);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// DOWNLOAD WALLPAPER (with visibility check and download count increment)
+exports.likeWallpaper = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Find the wallpaper by ID
+    const wallpaper = await Wallpaper.findById(id);
+
+    // Check if the wallpaper exists and is visible
+    if (!wallpaper) {
+      return res.status(404).json({ message: "Wallpaper not found" });
+    }
+
+    if (!wallpaper.visibility) {
+      return res.status(403).json({ message: "Wallpaper is not visible" });
+    }
+
+    // Increase the download count
+    wallpaper.likes += 1;
+    await wallpaper.save();
+
+    // Send the imageUrl as the response
+    res.json({ message: "Like added successfully" });
+  } catch (error) {
+    console.error("Error like wallpaper:", error.message);
     res.status(500).json({ message: "Server error" });
   }
 };

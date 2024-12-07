@@ -26,11 +26,20 @@ export const fetchWallpapers = async (token, page = 1) => {
 };
 
 // Upload wallpaper API call
-export const uploadWallpaper = async (title, description, image, token) => {
+export const uploadWallpaper = async (
+  title,
+  description,
+  category,
+  tags,
+  image,
+  token
+) => {
   try {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
+    formData.append("category", category);
+    formData.append("tags", tags);
     formData.append("image", image);
 
     const response = await axios.post(`${API}/upload`, formData, {
@@ -80,6 +89,7 @@ export const updateVisibility = async (id, token) => {
   try {
     const response = await axios.put(
       `${API}/wallpaper/${id}/visibility`,
+      {},
       {
         headers: {
           Authorization: `Bearer ${token}`,

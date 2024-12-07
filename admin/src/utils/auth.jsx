@@ -1,4 +1,5 @@
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
+import { logout } from "../api/auth";
 
 export const setToken = (token) => {
   localStorage.setItem("token", token);
@@ -21,6 +22,7 @@ export const isAuthenticated = () => {
     const currentTime = Date.now() / 1000; // Current time in seconds
     if (decodedToken.exp < currentTime) {
       // Token has expired
+      logout(token);
       localStorage.removeItem("token"); // Optionally clear the token
       return false;
     }

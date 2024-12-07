@@ -8,7 +8,7 @@ module.exports = withMT({
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Figtree",system-ui, sans-serif', ...fontFamily.sans],
+        sans: ['"Outfit",system-ui, sans-serif', ...fontFamily.sans],
         mono: ['"Space Mono", monospace', ...fontFamily.mono],
       },
     },

@@ -66,7 +66,7 @@ const ViewWallpapers = () => {
   }, [hasMore, isLoadingMore, loading]);
 
   return (
-    <div>
+    <section className="mt-4">
       <h1 className="text-xl font-black mb-6 uppercase text-gray-400 font-mono tracking-widest">
         All Wallpapers
       </h1>
@@ -121,7 +121,7 @@ const ViewWallpapers = () => {
           <Spinner />
         </div>
       )}
-    </div>
+    </section>
   );
 };
 

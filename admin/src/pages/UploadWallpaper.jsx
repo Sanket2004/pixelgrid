@@ -1,14 +1,26 @@
 import React, { useState } from "react";
-import { Button, Input, Textarea, Typography } from "@material-tailwind/react";
+import {
+  Button,
+  Input,
+  Textarea,
+  Typography,
+  Select,
+  Option,
+  Chip,
+} from "@material-tailwind/react";
 import { useDropzone } from "react-dropzone";
-import { FaRegTrashCan } from "react-icons/fa6";
+import { FaRegTrashCan, FaXmark } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import { uploadWallpaper } from "../api/wallpaper"; // Import the uploadWallpaper function
 import { getToken } from "../utils/auth";
+import { TbTrash } from "react-icons/tb";
 
 const UploadWallpaper = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [tags, setTags] = useState([]);
+  const [inputTag, setInputTag] = useState(""); // For the current tag input value
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -24,11 +36,34 @@ const UploadWallpaper = () => {
     multiple: false,
   });
 
+  const handleTagChange = (e) => {
+    setInputTag(e.target.value);
+  };
+
+  const handleAddTag = (e) => {
+    const value = inputTag.trim();
+    if ((e.key === " " || e.key === "Tab" || e.key === "Enter") && value) {
+      e.preventDefault();
+      setTags([...tags, value]);
+      setInputTag("");
+    }
+  };
+
+  const handleTagDelete = (index) => {
+    const newTags = tags.filter((_, i) => i !== index);
+    setTags(newTags);
+  };
+
   const handleUpload = async (e) => {
     e.preventDefault();
 
     if (!image) {
       toast.error("Please select an image");
+      return;
+    }
+
+    if (!category) {
+      toast.error("Please select a category");
       return;
     }
 
@@ -38,15 +73,25 @@ const UploadWallpaper = () => {
 
     try {
       // Call the uploadWallpaper function from API
-      const data = await uploadWallpaper(title, description, image, token);
+      const data = await uploadWallpaper(
+        title,
+        description,
+        category,
+        tags,
+        image,
+        token
+      );
       toast.success("Wallpaper added successfully");
 
       // Clear input fields and reset image
       setTitle("");
       setDescription("");
+      setCategory("");
+      setTags([]);
+      setInputTag("");
       setImage(null);
     } catch (error) {
-      const errorMsg = error.response?.data?.message;
+      const errorMsg = error.response?.data?.message || "An error occurred";
       console.error(error);
       toast.error(errorMsg);
     } finally {
@@ -59,62 +104,117 @@ const UploadWallpaper = () => {
   };
 
   return (
-    <div className="mx-auto flex flex-col-reverse justify-center items-center min-h-[80vh] lg:flex-row gap-14">
-      <div className="lg:w-1/2 flex items-start h-full justify-center w-full">
-        <form onSubmit={handleUpload} className="space-y-6 w-full">
-          <Typography variant="h3" className="font-black font-mono">
-            Upload your wallpaper
+    <section className="mx-auto grid grid-cols-1 w-full items-center gap-10 md:grid-cols-2 mt-4">
+      <div className=" flex items-start h-full justify-center w-full">
+        <form onSubmit={handleUpload} className="w-full">
+          <Typography
+            variant="h4"
+            className="font-black font-mono uppercase mb-2 text-gray-400 tracking-wider"
+          >
+            Upload wallpaper
           </Typography>
-          <Typography variant="paragraph" className="text-gray-600">
+          <Typography variant="paragraph" className="text-gray-600 mb-4">
             Share your best wallpapers with the world. Make it easy for users to
             download and set them as their backgrounds.
           </Typography>
+          <div className="space-y-4">
+            {/* Title Input */}
+            <Input
+              type="text"
+              variant="standard"
+              placeholder="e.g. Moving Bits"
+              color="gray"
+              label="Title"
+              size="lg"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
 
-          {/* Title Input */}
-          <Input
-            type="text"
-            variant="standard"
-            placeholder="e.g. Moving Bits"
-            color="black"
-            label="Title"
-            size="lg"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
+            {/* Description Input */}
+            <Textarea
+              type="text"
+              variant="standard"
+              color="gray"
+              label="Description"
+              rows={5}
+              size="lg"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
 
-          {/* Image Description */}
-          <Textarea
-            type="text"
-            variant="standard"
-            color="black"
-            label="Description"
-            rows={5}
-            size="lg"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
+            {/* Category Input */}
+            <Select
+              label="Category"
+              value={category}
+              variant="standard"
+              color="gray"
+              onChange={(value) => setCategory(value)}
+              required
+            >
+              <Option value="Nature">Nature</Option>
+              <Option value="Technology">Technology</Option>
+              <Option value="Abstract">Abstract</Option>
+              <Option value="Art">Art</Option>
+              <Option value="Animals">Animals</Option>
+              <Option value="Space">Space</Option>
+              <Option value="Cities">Cities</Option>
+              <Option value="Sports">Sports</Option>
+              <Option value="Cars">Cars</Option>
+              <Option value="Other">Other</Option>
+            </Select>
 
-          {/* Submit Button */}
-          <Button type="submit" size="md" className="w-full font-mono tracking-widest" disabled={loading}>
-            {loading ? "Uploading..." : "Upload"}
-          </Button>
+            {/* Tags Input */}
+            <div className="flex items-center gap-2 flex-wrap">
+              <Input
+                type="text"
+                variant="standard"
+                placeholder="e.g. nature forest sunset"
+                color="gray"
+                label="Tags"
+                size="lg"
+                value={inputTag}
+                onChange={handleTagChange}
+                onKeyDown={handleAddTag}
+              />
+              <div className="flex gap-2 flex-wrap">
+                {tags.map((tag, index) => (
+                  <Chip
+                    key={index} // Provide a key to ensure proper rendering in lists
+                    value={tag}
+                    className="normal-case"
+                    onClose={()=>handleTagDelete(index)}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              size="md"
+              className="w-full font-mono tracking-widest"
+              disabled={loading}
+            >
+              {loading ? "Uploading..." : "Upload"}
+            </Button>
+          </div>
         </form>
       </div>
 
-      <div className="lg:w-1/2 w-full flex items-center justify-center h-full">
+      <div className=" w-full flex items-center justify-center h-full shadow-md rounded-lg overflow-hidden">
         {image ? (
           <div className="relative w-full h-full">
             <img
               src={URL.createObjectURL(image)}
               alt="Selected Preview"
-              className="w-full h-[25em] object-cover rounded-lg"
+              className="w-full h-[30em] object-cover rounded-lg"
             />
             <button
               type="button"
               onClick={handleDeselect}
-              className="absolute top-2 right-2 rounded-xl w-10 h-10 flex items-center justify-center bg-[#ffffff91] hover:bg-[#ffffff61]"
+              className="absolute top-2 right-2 rounded-xl w-10 h-10 flex items-center justify-center bg-[#ffffff91] hover:bg-[#ffffff61] shadow-md"
             >
               <FaRegTrashCan size={15} className="text-gray-800 text-xl" />
             </button>
@@ -122,7 +222,7 @@ const UploadWallpaper = () => {
         ) : (
           <div
             {...getRootProps()}
-            className={`border-2 border-dashed rounded p-6 text-center h-[25em] w-full flex justify-center items-center cursor-pointer ${
+            className={`border-2 border-dashed p-6 text-center min-h-80 h-full w-full flex justify-center items-center cursor-pointer rounded-lg ${
               isDragActive ? "border-blue-500 bg-blue-50" : "border-gray-500"
             }`}
           >
@@ -137,7 +237,7 @@ const UploadWallpaper = () => {
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

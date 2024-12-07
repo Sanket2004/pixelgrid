@@ -21,8 +21,8 @@ router.get("/wallpapers", authMiddleware, getWallpapers);
 router.get("/details", authMiddleware, getUserDetails);
 router.put("/wallpaper/:id", authMiddleware, updateWallpaper);
 router.delete("/wallpaper/:id", authMiddleware, deleteWallpaper);
-router.put('/wallpaper/:id/visibility', updateVisibility);
+router.put('/wallpaper/:id/visibility',authMiddleware, updateVisibility);
 
-router.post("/logout", authMiddleware, logout);
+router.post("/logout", logout);
 
 module.exports = router;

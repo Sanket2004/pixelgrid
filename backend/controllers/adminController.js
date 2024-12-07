@@ -120,18 +120,27 @@ exports.getUserDetails = async (req, res) => {
   }
 };
 
-//UPLOAD WALLPAPER
+
+// UPLOAD WALLPAPER
 exports.uploadWallpaper = [
   upload.single("image"),
   async (req, res) => {
-    const { title, description } = req.body;
+    const { title, description, category, tags } = req.body;
     const file = req.file;
 
     if (!file) {
       return res.status(400).json({ message: "Please upload a file" });
     }
 
+    // Validate required fields
+    if (!title || !description || !category) {
+      return res
+        .status(400)
+        .json({ message: "Title, description, and category are required" });
+    }
+
     try {
+      // Upload the file to Cloudinary
       const stream = cloudinary.uploader.upload_stream(
         {
           resource_type: "image",
@@ -145,19 +154,33 @@ exports.uploadWallpaper = [
               .json({ message: "Error uploading to Cloudinary" });
           }
 
+          // Extract Cloudinary response data
           const imageUrl = result.secure_url;
+          const resolution = `${result.width}x${result.height}`;
+          const fileSize = Math.round(result.bytes / 1024); // Convert bytes to KB
 
+          // Create a new wallpaper document
           const wallpaper = new Wallpaper({
             title,
             description,
             imageUrl,
             visibility: true,
+            category,
+            tags: tags ? tags.split(",").map((tag) => tag.trim()) : [], // Split tags by comma
+            resolution,
+            fileSize,
+            uploaderId: req.user._id, // Assumes `req.user` contains the authenticated user's ID
           });
 
           await wallpaper.save();
-          res.json(wallpaper);
+
+          res.status(201).json({
+            message: "Wallpaper uploaded successfully",
+            wallpaper,
+          });
         }
       );
+
       // Stream the file to Cloudinary directly from memory
       streamifier.createReadStream(file.buffer).pipe(stream);
     } catch (error) {
@@ -228,21 +251,23 @@ exports.getWallpapers = async (req, res) => {
   }
 };
 
-//UPDATE WALLS
 exports.updateWallpaper = async (req, res) => {
   const { id } = req.params;
-  const { title, description } = req.body;
+  const { title, description, tags, category } = req.body;
 
   try {
+    // Check required fields
     if (!title || !description) {
       return res
         .status(400)
         .json({ message: "Title and description are required" });
     }
+
+    // Update wallpaper
     const updateWallpaper = await Wallpaper.findByIdAndUpdate(
       id,
-      { title, description },
-      { new: true, runValidators: true }
+      { title, description, tags, category },
+      { new: true, runValidators: true } // Ensure validators are run and return the updated document
     );
 
     if (!updateWallpaper) {
@@ -259,6 +284,7 @@ exports.updateWallpaper = async (req, res) => {
       .json({ message: "An error occurred updating the wallpaper." });
   }
 };
+
 
 //DELETE WALLS
 exports.deleteWallpaper = async (req, res) => {

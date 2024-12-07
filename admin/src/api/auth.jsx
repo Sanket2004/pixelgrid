@@ -23,11 +23,11 @@ export const logout = async (token) => {
     const response = await axios.post(
       `${API_URL}/logout`,
       {}, // No request body for logout
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      // {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // }
     );
     return response.data;
   } catch (error) {
