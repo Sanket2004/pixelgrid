@@ -120,7 +120,6 @@ exports.getUserDetails = async (req, res) => {
   }
 };
 
-
 // UPLOAD WALLPAPER
 exports.uploadWallpaper = [
   upload.single("image"),
@@ -285,7 +284,6 @@ exports.updateWallpaper = async (req, res) => {
   }
 };
 
-
 //DELETE WALLS
 exports.deleteWallpaper = async (req, res) => {
   const { id } = req.params;
@@ -333,15 +331,47 @@ exports.updateVisibility = async (req, res) => {
   }
 };
 
+// exports.logout = async (req, res) => {
+//   try {
+//     // Remove the active device session for the logged-in user
+//     await ActiveDeviceModel.deleteOne({
+//       userId: req.user._id,
+//       tokenSessionId: req.headers.authorization?.split(" ")[1], // Make sure the session is invalidated
+//     });
+
+//     return res.status(201).json({ message: "Logged out successfully." });
+//   } catch (error) {
+//     console.error("Logout error:", error);
+//     return res.status(500).json({ message: "Internal Server Error" });
+//   }
+// };
+
 exports.logout = async (req, res) => {
   try {
-    // Remove the active device session for the logged-in user
-    await ActiveDeviceModel.deleteOne({
-      userId: req.user._id,
-      tokenSessionId: req.headers.authorization?.split(" ")[1], // Make sure the session is invalidated
-    });
+    const { token } = req.body; // Extract the token from the body
+    console.log("Received token:", token);
 
-    return res.status(201).json({ message: "Logged out successfully." });
+    if (!token) {
+      return res.status(400).json({ message: "Authorization token is required." });
+    }
+
+    // Decode the token to get user ID (even if expired)
+    let userId;
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET, {
+        ignoreExpiration: true,
+      });
+      userId = decoded._id;
+    } catch (error) {
+      console.warn("Token expired, but proceeding with logout.");
+      const decoded = jwt.decode(token);
+      userId = decoded?.id;
+    }
+
+    // Remove the session from the database
+    await ActiveDeviceModel.deleteOne({ userId, tokenSessionId: token });
+
+    return res.status(204).send(); // No Content
   } catch (error) {
     console.error("Logout error:", error);
     return res.status(500).json({ message: "Internal Server Error" });

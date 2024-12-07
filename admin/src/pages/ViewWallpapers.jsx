@@ -80,7 +80,7 @@ const ViewWallpapers = () => {
             transition={{ delay: index * 0.05, duration: 0.5 }}
             className="rounded-xl shadow mb-2 overflow-hidden group block bg-black relative"
           >
-            <LazyLoadImage
+            <img
               effect="blur"
               src={wallpaper.compressedUrl}
               alt={wallpaper.title}
@@ -88,7 +88,7 @@ const ViewWallpapers = () => {
             />
 
             <div className="p-4 sm:p-6 lg:p-8 absolute inset-0">
-              <p className="text-sm font-medium uppercase text-gray-300 font-mono tracking-wider">
+              <p className="text-sm font-medium uppercase text-gray-300 tracking-wider">
                 {new Date(wallpaper.createdAt).toLocaleString()}
               </p>
 

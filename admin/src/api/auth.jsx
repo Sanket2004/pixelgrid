@@ -17,23 +17,20 @@ export const signup = async (name, email, password) => {
 };
 
 export const logout = async (token) => {
-  console.log(token);
-  
+  console.log("Logging out with token:", token);
+
   try {
+    // Send token in the body as an object for clarity
     const response = await axios.post(
-      `${API_URL}/logout`,
-      {}, // No request body for logout
-      // {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // }
+      `${API_URL}/logout`, 
+      { token } // Send the token as part of the request body
     );
     return response.data;
   } catch (error) {
     console.error("Logout Error:", error.response?.data || error.message);
   }
 };
+
 
 export const fetchUserDetails = async (token) => {
   try {
